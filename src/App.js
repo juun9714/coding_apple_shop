@@ -6,14 +6,14 @@ import { Nav, Navbar, Container, NavDropdown, Button } from 'react-bootstrap';
 import React, { useState } from 'react'
 import Data from './data'
 import { Link, Route, Switch } from 'react-router-dom'
+import axios from 'axios'
 
 
 
 function App() {
 
   let [shoes, shoes변경] = useState(Data)
-
-
+  let [재고, 재고변경]=useState([10,11,12])
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -22,8 +22,8 @@ function App() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="me-auto">
-              <Nav.Link><Link to="/">Home</Link></Nav.Link>
-              <Nav.Link><Link to="/detail">Detail</Link></Nav.Link>
+              <Nav.Link as={Link} to="/">Home</Nav.Link>
+              <Nav.Link as={Link} to="/detail/0">Detail</Nav.Link>
               <NavDropdown title="Dropdown" id="basic-nav-dropdown">
                 <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
                 <NavDropdown.Item href="#action/3.2">Another action</NavDropdown.Item>
@@ -56,12 +56,29 @@ function App() {
                 })
               }
             </div>
+            <button className="btn btn-primary" onClick={()=>{
+
+              // axios.post('서버 URL',{id:"coding_apple",pw:1234})
+              axios.get('https://codingapple1.github.io/shop/data2.json')
+              .then((result)=>{
+                var shoes2=[...shoes]
+                for(var i=0;i<result.data.length;i++){
+                  shoes2.push(result.data[i])
+                }
+                shoes변경(shoes2)
+
+                //shoes변경([...shoes,...result.data]); <= 똑같은 결과 
+              })//success
+              .catch(()=>{
+                console.log("fail")
+              })//fail
+            }}>더보기</button>
           </div>
         </Route>
 
 
         <Route path="/detail/:id">
-          <Detail shoes={shoes}></Detail>
+          <Detail shoes={shoes} remain={재고}></Detail>
         </Route>
 
         {/* <Route path="/:id">
@@ -81,7 +98,7 @@ function App() {
 function Card(props) {
   return (
     <div className="col-md-4">
-      <img alt="pic" src={props.shoe.src} width="100%"></img>
+      <img alt="pic" src={'https://codingapple1.github.io/shop/shoes'+(props.shoe.id+1)+'.jpg'} width="100%"></img>
       <h4>{props.shoe.title}</h4>
       <p>{props.shoe.content} & {props.shoe.price}원</p>
     </div>
