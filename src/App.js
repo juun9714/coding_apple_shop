@@ -2,6 +2,8 @@
 
 import './App.css';
 import Detail from './components/Detail';
+import Client from './components/Client';
+import Client2 from './components/Client2';
 import { Nav, Navbar, Container, NavDropdown, Button } from 'react-bootstrap';
 import React, { useState } from 'react'
 import Data from './data'
@@ -14,6 +16,7 @@ function App() {
 
   let [shoes, shoes변경] = useState(Data)
   let [재고, 재고변경]=useState([10,11,12])
+  let [btn,btnChange]=useState(false)
   return (
     <div className="App">
       <Navbar bg="light" expand="lg">
@@ -78,7 +81,7 @@ function App() {
 
 
         <Route path="/detail/:id">
-          <Detail shoes={shoes} remain={재고}></Detail>
+          <Detail shoes={shoes} remain={재고} remainFunc={재고변경}></Detail>
         </Route>
 
         {/* <Route path="/:id">
@@ -90,7 +93,10 @@ function App() {
 
       </Switch>
       {/* switch : 여러 경로가 match될 때, 가장 위에서 매치된 Router만 보여준다. */}
-
+      <p></p>
+      <Client></Client>
+      <Client2></Client2>
+      
     </div>
   );
 }

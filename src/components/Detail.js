@@ -1,3 +1,4 @@
+/* eslint-disable-next-line*/
 import React, { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import styled from 'styled-components'
@@ -93,12 +94,13 @@ function Detail(props) {
                     <p>{shoe.content}</p>
                     <p>{shoe.price} 원</p>
 
-
                     <Remain remain={props.remain[id]}></Remain>
 
-
-
-                    <button className="btn btn-danger">주문하기</button>
+                    <button className="btn btn-danger" onClick={()=>{
+                        var _remain=[...props.remain]
+                        _remain[id]=props.remain[id]-1
+                        props.remainFunc(_remain)
+                    }}>주문하기</button>
                     <p></p>
                     <button className="btn btn-danger" onClick={() => {
                         history.goBack()
@@ -117,8 +119,6 @@ function Detail(props) {
 function Remain(props){
     return(
         <p>재고 : {props.remain}개 </p>
-
-
     )
 }
 
